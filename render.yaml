@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: resqnet
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 run:app
+    healthCheckPath: /api/health
+    disk:
+      name: resqnet-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: RESQNET_DATABASE
+        value: /var/data/resqnet.db
+      - key: DEBUG
+        value: "false"

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b111b">
+  <title>ResQNet | Metroville Operations</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="ResQNet home">
+        <span class="brand-mark">R<span>Q</span></span>
+        <span><strong>ResQNet</strong><small>METROVILLE SIMULATION</small></span>
+      </a>
+      <div class="sidebar-label">OPERATIONS</div>
+      <nav id="navigation">
+        <button class="nav-link active" data-page="overview"><span>◫</span> Overview</button>
+        <button class="nav-link" data-page="map"><span>⌖</span> Live City Map</button>
+        <button class="nav-link" data-page="dispatch"><span>✚</span> Emergency Dispatch</button>
+        <button class="nav-link" data-page="routes"><span>⇢</span> Route Optimizer</button>
+        <button class="nav-link" data-page="hospitals"><span>⌂</span> Hospital Allocation</button>
+        <button class="nav-link" data-page="evacuation"><span>⇧</span> Evacuation Planner</button>
+        <div class="sidebar-label nav-group-label">ALGORITHMS</div>
+        <button class="nav-link" data-page="lab"><span>⌘</span> Algorithm Lab</button>
+        <button class="nav-link" data-page="benchmark"><span>◷</span> Benchmarking</button>
+        <button class="nav-link" data-page="network"><span>⌗</span> Network Manager</button>
+        <button class="nav-link" data-page="analytics"><span>▥</span> Analytics</button>
+        <button class="nav-link" data-page="about"><span>ⓘ</span> About ADSA</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="simulation-note"><span class="pulse-dot"></span><span><b>SIMULATION MODE</b><small>No live emergency connection</small></span></div>
+        <button class="reset-button" id="reset-demo">↺ &nbsp; Reset demo data</button>
+        <small class="version">RESQNET · ACADEMIC PROJECT</small>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Metroville</span><b>/</b><strong id="top-page-name">Overview</strong></div>
+        <div class="topbar-right"><span class="simulation-pill"><i></i> SIMULATED DATA</span><span class="top-divider"></span><span class="clock" id="clock"></span><span class="operator-avatar">OP</span></div>
+      </header>
+      <div id="toast" class="toast" role="status"></div>
+      <section class="page active" id="page-overview">
+        <div class="page-heading"><div><p class="eyebrow">COMMAND CENTER / METROVILLE</p><h1>City overview</h1><p class="subheading">A live view of the simulated emergency response network.</p></div><button class="button secondary" data-go="map">⌖ &nbsp; Open city map</button></div>
+        <div class="kpi-grid" id="kpi-grid"><div class="loading-card">Loading network status…</div></div>
+        <div class="overview-grid">
+          <article class="card map-card"><div class="card-heading"><div><h2>Metroville network</h2><p>Directed streets · select a node to inspect</p></div><span class="live-label"><i></i> NETWORK ACTIVE</span></div><div class="map-frame compact"><svg class="network-map" aria-label="Schematic map of the Metroville simulated network"></svg></div><div class="map-legend" id="map-legend"></div></article>
+          <article class="card activity-card"><div class="card-heading"><div><h2>Response activity</h2><p>Latest persisted simulation events</p></div><button class="text-button" data-go="analytics">View analytics ↗</button></div><div id="activity-list" class="activity-list"></div></article>
+          <article class="card incident-card"><div class="card-heading"><div><h2>Active incidents</h2><p>Current simulated response queue</p></div><button class="text-button" data-go="dispatch">Dispatch center ↗</button></div><div id="overview-incidents" class="compact-table-wrap"></div></article>
+        </div>
+      </section>
+      <section class="page" id="page-map">
+        <div class="page-heading"><div><p class="eyebrow">NETWORK OPERATIONS</p><h1>Live city map</h1><p class="subheading">Schematic simulation only — not a real navigation map.</p></div><div class="heading-actions"><select id="map-pick-mode" class="select"><option value="none">Select nodes</option><option value="source">Pick route origin</option><option value="destination">Pick route destination</option></select><button class="button secondary" id="clear-route">Clear route</button></div></div>
+        <article class="card full-map-card"><div class="map-toolbar"><span id="map-status">Loading actual graph…</span><div><button class="icon-button" id="zoom-in" aria-label="Zoom in">+</button><button class="icon-button" id="zoom-out" aria-label="Zoom out">−</button><button class="icon-button" id="zoom-reset" aria-label="Reset zoom">⤢</button></div></div><div class="map-frame full"><svg class="network-map" id="main-map" aria-label="Interactive schematic city map"></svg></div><div class="map-legend" id="main-map-legend"></div></article>
+        <div class="map-detail-grid"><article class="card"><div class="card-heading"><div><h2>Selected location</h2><p>Location data from the network database</p></div></div><div id="location-details" class="empty-state">Choose a node on the map to inspect it.</div></article><article class="card"><div class="card-heading"><div><h2>Route preview</h2><p>Backend-computed routes are highlighted here</p></div></div><div id="map-route-summary" class="empty-state">No route calculated.</div></article></div>
+      </section>
+      <section class="page" id="page-dispatch">
+        <div class="page-heading"><div><p class="eyebrow">INCIDENT MANAGEMENT</p><h1>Emergency dispatch</h1><p class="subheading">Create a simulated incident and assign the nearest capable available unit.</p></div><span class="simulation-pill"><i></i> TRAINING SCENARIO</span></div>
+        <div class="two-column">
+          <article class="card"><div class="card-heading"><div><h2>Report an incident</h2><p>All incidents are saved in the local SQLite database.</p></div></div>
+            <form id="incident-form" class="form-grid">
+              <label>Incident location<select name="location_id" class="select location-options" required></select></label>
+              <label>Incident type<input name="incident_type" required maxlength="80" placeholder="e.g. Traffic collision"></label>
+              <label>Severity<select name="severity" class="select"><option>Critical</option><option>High</option><option selected>Medium</option><option>Low</option></select></label>
+              <label>Required response unit<select name="required_unit" class="select"><option value="ambulance">Ambulance</option><option value="fire">Fire unit</option><option value="police">Police unit</option></select></label>
+              <label>Required specialty<select name="required_specialty" class="select"><option value="">General response</option><option value="trauma">Trauma</option><option value="cardiac">Cardiac</option></select></label>
+              <label class="span-two">Description<textarea name="description" rows="2" placeholder="Simulation details"></textarea></label>
+              <div class="form-footer"><span class="hint">No real emergency services are contacted.</span><button class="button primary" type="submit">＋ Create incident</button></div>
+            </form>
+          </article>
+          <article class="card"><div class="card-heading"><div><h2>Response units</h2><p>Availability and current assignment status</p></div><span id="ambulance-count" class="count-pill">— units</span></div><div id="ambulance-list" class="unit-list"></div></article>
+        </div>
+        <article class="card section-card"><div class="card-heading"><div><h2>Incident queue</h2><p>Confirm dispatch, advance status, or cancel a simulation.</p></div><button class="button secondary small" id="refresh-incidents">↻ Refresh</button></div><div id="incident-table" class="table-wrap"></div></article>
+      </section>
+      <section class="page" id="page-routes">
+        <div class="page-heading"><div><p class="eyebrow">ROUTE OPTIMIZATION</p><h1>Route optimizer</h1><p class="subheading">Compare optimal paths on one consistent snapshot of open roads.</p></div></div>
+        <div class="two-column route-layout">
+          <article class="card"><div class="card-heading"><div><h2>Route query</h2><p>Choose an origin, destination, and shortest-path method.</p></div></div>
+            <form id="route-form" class="form-grid">
+              <label>Starting point<select id="route-source" name="source" class="select location-options"></select></label>
+              <label>Destination<select id="route-destination" name="destination" class="select location-options"></select></label>
+              <label>Algorithm<select name="algorithm" class="select"><option value="dijkstra_heap">Dijkstra · binary heap</option><option value="dijkstra_array">Dijkstra · array scan</option><option value="astar">A* · geographic heuristic</option></select></label>
+              <label>Optimize for<select name="metric" class="select"><option value="time">Travel time</option><option value="distance">Distance</option></select></label>
+              <label class="check-label span-two"><input type="checkbox" name="compare"> Compare all three algorithms</label>
+              <div class="form-footer span-two"><span class="hint">Routes exclude closed roads.</span><button class="button primary" type="submit">Calculate route →</button></div>
+            </form>
+            <div id="route-result" class="result-panel empty-state">Set route endpoints to get started.</div>
+          </article>
+          <article class="card route-map-card"><div class="card-heading"><div><h2>Route visualization</h2><p>Path rendered from the algorithm's returned edges</p></div><button class="text-button" data-go="map">Expand map ↗</button></div><div class="map-frame medium"><svg class="network-map" aria-label="Shortest route visualization"></svg></div></article>
+        </div>
+      </section>
+      <section class="page" id="page-hospitals">
+        <div class="page-heading"><div><p class="eyebrow">PATIENT DESTINATION</p><h1>Hospital allocation</h1><p class="subheading">Rank accepting hospitals by reachable ETA, specialty, and current bed capacity.</p></div></div>
+        <div class="two-column"><article class="card"><div class="card-heading"><div><h2>Recommend a destination</h2><p>Select an incident to evaluate appropriate hospitals.</p></div></div><form id="hospital-form" class="inline-form"><label>Incident<select id="hospital-incident" class="select"></select></label><button class="button primary">Find hospitals</button><button type="button" class="button secondary" id="allocate-hospital-queue">Allocate queued incidents</button></form><div id="hospital-results" class="result-panel empty-state">Recommendations will appear here.</div></article><article class="card"><div class="card-heading"><div><h2>Hospital capacity</h2><p>Current persisted occupancy and specialties</p></div></div><div id="hospital-list" class="hospital-list"></div></article></div>
+      </section>
+      <section class="page" id="page-evacuation">
+        <div class="page-heading"><div><p class="eyebrow">CAPACITY-BASED SIMULATION</p><h1>Evacuation planner</h1><p class="subheading">Edmonds–Karp maximum flow through open roads and available shelter intake.</p></div><span class="simulation-pill warning"><i></i> SIMULATED THROUGHPUT</span></div>
+        <div class="two-column"><article class="card"><div class="card-heading"><div><h2>Configure scenario</h2><p>Demand, road throughput, and shelter capacities form a separate flow graph.</p></div></div><form id="evacuation-form" class="form-grid"><label class="span-two">Population demand per selected zone<input id="population-demand" class="input" type="number" min="1" step="1" value="100" required></label><div class="span-two"><label>Evacuation zones</label><div id="zone-options" class="check-list"></div></div><div class="span-two"><label>Available shelters and intake overrides</label><div id="shelter-options" class="check-list shelter-checks"></div></div><div class="form-footer span-two"><span class="hint">Road capacities are people per simulated period.</span><button class="button primary">Calculate maximum flow</button></div></form></article><article class="card"><div class="card-heading"><div><h2>Flow result</h2><p>Throughput and cut information from the residual network</p></div></div><div id="evacuation-results" class="result-panel empty-state">Configure one or more zones and shelters.</div></article></div>
+        <article class="card section-card"><h2>Why max-flow?</h2><p class="body-copy">The simulator links an artificial source to zone demand, uses directed road capacities for intermediate edges, and connects shelter locations to an artificial sink using intake capacity. Edmonds–Karp repeatedly finds a residual augmenting path and reports a minimum cut. Travel-time weights are never used as capacities.</p><p class="disclaimer">This is a configurable academic simulation, not a guarantee of real-world evacuation safety.</p></article>
+      </section>
+      <section class="page" id="page-lab">
+        <div class="page-heading"><div><p class="eyebrow">ADSA / TRACE REPLAY</p><h1>Algorithm lab</h1><p class="subheading">Inspect actual backend traversal and shortest-path events step by step.</p></div></div>
+        <article class="card"><form id="lab-form" class="toolbar-form"><label>Algorithm<select id="lab-algorithm" class="select"><option value="dijkstra_heap">Dijkstra · heap</option><option value="dijkstra_array">Dijkstra · array</option><option value="astar">A* Search</option><option value="bfs">Breadth-first search</option><option value="dfs">Depth-first search</option><option value="bellman_ford">Bellman–Ford sandbox</option></select></label><label>Start<select id="lab-source" class="select location-options"></select></label><label class="route-lab-only">Destination<select id="lab-destination" class="select location-options"></select></label><label class="bf-lab-only" style="display:none">Educational graph<select id="bf-scenario" class="select"><option value="negative">Negative edge · no negative cycle</option><option value="cycle">Reachable negative cycle</option></select></label><button class="button primary">Generate trace</button></form></article>
+        <div class="lab-grid"><article class="card lab-map-card"><div class="card-heading"><div><h2>Execution graph</h2><p id="trace-status">Generate a traversal or route trace to begin.</p></div><span class="step-badge" id="step-badge">STEP 0 / 0</span></div><div class="map-frame lab-map-frame"><svg class="network-map" id="city-trace-map" aria-label="Metroville graph algorithm trace visualization"></svg><svg id="education-map" aria-label="Bellman-Ford educational graph visualization" style="display:none"></svg></div><div class="trace-controls"><button class="button secondary small" id="trace-previous" disabled>← Previous</button><button class="button primary small" id="trace-next" disabled>Next step →</button><button class="button secondary small" id="trace-play" disabled>▶ Play</button><label class="speed-control">Speed <select id="trace-speed" class="select"><option value="900">Slow</option><option value="450" selected>Normal</option><option value="140">Fast</option></select></label><button class="text-button" id="trace-reset">Reset</button></div></article><aside class="card trace-info"><h2>Run details</h2><div id="trace-event" class="trace-event empty-state">Events will be shown here as you step through the execution.</div><h3>Final statistics</h3><div id="trace-stats" class="stats-list"></div></aside></div>
+      </section>
+      <section class="page" id="page-benchmark">
+        <div class="page-heading"><div><p class="eyebrow">EMPIRICAL ANALYSIS</p><h1>Benchmarking lab</h1><p class="subheading">Measured runtimes use one reproducible generated graph and warm-up runs.</p></div></div>
+        <article class="card"><form id="benchmark-form" class="toolbar-form benchmark-form"><label>Vertices<select name="size" class="select"><option>25</option><option>50</option><option selected>100</option><option>250</option><option>500</option></select></label><label>Average degree<input name="average_degree" class="input" type="number" min="2" max="20" value="4"></label><label>Repetitions<input name="repetitions" class="input" type="number" min="1" max="7" value="3"></label><label>Random seed<input name="seed" class="input" type="number" value="42"></label><label class="check-label"><input type="checkbox" name="growth"> Run size growth sweep</label><button class="button primary">Run benchmark</button></form></article>
+        <div class="benchmark-grid"><article class="card"><div class="card-heading"><div><h2>Measured execution time</h2><p>Median wall-clock time per algorithm</p></div><span class="measured-pill">MEASURED · MS</span></div><div id="benchmark-chart" class="chart-area empty-state">Run a benchmark to measure the algorithms.</div></article><article class="card"><div class="card-heading"><div><h2>Complexity reference</h2><p>Theory is distinct from observed runtime.</p></div></div><div id="complexity-table" class="table-wrap"></div></article></div>
+        <article class="card section-card"><div id="benchmark-details" class="body-copy">Benchmark timings depend on hardware, graph structure, and the Python runtime. Tracing is disabled while measuring.</div></article>
+      </section>
+      <section class="page" id="page-network">
+        <div class="page-heading"><div><p class="eyebrow">ROAD NETWORK ADMIN</p><h1>Network manager</h1><p class="subheading">Manage directed road records and plan a minimum-distance/cost connection forest.</p></div><button class="button secondary" id="refresh-roads">↻ Refresh roads</button></div>
+        <div class="two-column"><article class="card"><div class="card-heading"><div><h2>Infrastructure plan</h2><p>Kruskal over deduplicated reciprocal edges.</p></div></div><form id="mst-form" class="inline-form"><label>Optimize connection cost<select name="weight" class="select"><option value="distance">Distance</option><option value="cost">Infrastructure cost</option></select></label><button class="button primary">Generate forest</button></form><div id="mst-result" class="result-panel empty-state">Generate an infrastructure plan.</div></article><article class="card"><div class="card-heading"><div><h2>Connectivity analysis</h2><p>Traversal is directed; components treat roads as undirected.</p></div></div><form id="connectivity-form" class="inline-form"><label>Start location<select id="connectivity-source" class="select location-options"></select></label><label>Traversal<select name="algorithm" class="select"><option value="bfs">BFS</option><option value="dfs">DFS</option></select></label><button class="button primary">Analyze</button></form><div id="connectivity-result" class="result-panel empty-state">Run BFS or DFS to inspect reachability.</div></article></div>
+        <article class="card section-card"><div class="card-heading"><div><h2>Directed road connections</h2><p>Closing one directed record leaves any reciprocal road independently managed.</p></div><span id="road-count" class="count-pill">— roads</span></div><div id="road-table" class="table-wrap"></div></article>
+      </section>
+      <section class="page" id="page-analytics">
+        <div class="page-heading"><div><p class="eyebrow">OPERATIONS INSIGHTS</p><h1>Analytics</h1><p class="subheading">Aggregates calculated from persisted incidents, dispatches, roads, and capacity.</p></div><button class="button secondary" id="refresh-analytics">↻ Refresh</button></div>
+        <div id="analytics-kpis" class="kpi-grid"></div><div class="two-column analytics-grid"><article class="card"><div class="card-heading"><div><h2>Incident status breakdown</h2><p>Current database records, grouped by workflow state.</p></div></div><div id="status-chart" class="chart-area"></div></article><article class="card"><div class="card-heading"><div><h2>Dispatch history</h2><p>Recorded response assignments and selected route ETA.</p></div></div><div id="dispatch-history" class="table-wrap"></div></article></div>
+      </section>
+      <section class="page" id="page-about">
+        <div class="page-heading"><div><p class="eyebrow">ANALYSIS & DESIGN OF ALGORITHMS</p><h1>About ResQNet</h1><p class="subheading">A reproducible, offline-friendly emergency response network simulation for learning graph algorithms.</p></div></div>
+        <div class="about-grid"><article class="card"><span class="about-icon">⌗</span><h2>Graph model</h2><p>Metroville locations are vertices. Each directed road is an edge with independent travel time, distance, and evacuation capacity. Bidirectional streets are represented by reciprocal directed rows.</p></article><article class="card"><span class="about-icon">⌘</span><h2>Algorithmic methods</h2><p>Dijkstra heap and array, admissible A*, BFS/DFS, Kruskal with disjoint sets, Edmonds–Karp maximum flow, and Bellman–Ford in an isolated negative-weight lab.</p></article><article class="card"><span class="about-icon">▤</span><h2>Layered application</h2><p>Pure Python algorithms are coordinated by services, persisted through a centralized SQLite layer, exposed as Flask JSON APIs, and visualized with plain HTML, CSS, JavaScript, and SVG.</p></article></div>
+        <article class="card section-card"><div class="card-heading"><div><h2>Complexity reference</h2><p>Asymptotic time bounds shown alongside measured Python benchmark results.</p></div></div><div id="theory-table" class="table-wrap"></div></article>
+        <article class="card section-card"><h2>Simulation limitations</h2><p class="body-copy">This project has no live emergency dispatch, traffic feed, mapping service, or external data connection. The schematic map and all operational records are simulated. The hospital allocation heuristic is greedy and does not guarantee a globally optimal multi-incident assignment. Road-capacity flow results are theoretical throughput for a configured period, not operational safety guidance.</p></article>
+      </section>
+      <footer class="footer"><span>ResQNet · Metroville emergency response simulation</span><span>For ADSA education only · Not for real emergency use</span></footer>
+    </main>
+  </div>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
