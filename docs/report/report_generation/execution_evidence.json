@@ -1,0 +1,839 @@
+{
+  "environment": {
+    "python": "3.14.3",
+    "flask": "3.1.3",
+    "pytest": "8.4.2"
+  },
+  "seed": {
+    "locations": 36,
+    "directed_roads": 120,
+    "ambulances": 8,
+    "hospitals": 6,
+    "shelters": 6,
+    "incidents": 2,
+    "seed_rule": "deterministic 6x6 grid"
+  },
+  "route": {
+    "source": "M01",
+    "destination": "M36",
+    "algorithm": "dijkstra_heap",
+    "metric": "time",
+    "path": [
+      "M01",
+      "M02",
+      "M08",
+      "M09",
+      "M15",
+      "M21",
+      "M22",
+      "M28",
+      "M29",
+      "M35",
+      "M36"
+    ],
+    "cost": 20.5,
+    "distance_km": 14.2,
+    "travel_minutes": 20.5,
+    "stats": {
+      "algorithm": "dijkstra_heap",
+      "edge_checks": 118,
+      "execution_ms": 0.0653000024612993,
+      "heap_operations": 71,
+      "iterations": 36,
+      "relaxations": 35
+    }
+  },
+  "comparison": [
+    {
+      "algorithm": "dijkstra_heap",
+      "cost": 20.5,
+      "visited_nodes": 36,
+      "edge_checks": 118,
+      "relaxations": 35,
+      "execution_ms": 0.0427999984822236
+    },
+    {
+      "algorithm": "dijkstra_array",
+      "cost": 20.5,
+      "visited_nodes": 36,
+      "edge_checks": 118,
+      "relaxations": 35,
+      "execution_ms": 0.11249999806750566
+    },
+    {
+      "algorithm": "astar",
+      "cost": 20.5,
+      "visited_nodes": 36,
+      "edge_checks": 118,
+      "relaxations": 35,
+      "execution_ms": 0.0790999984019436
+    }
+  ],
+  "dispatch_options": {
+    "alternatives": [
+      {
+        "ambulance_id": "AMB-05",
+        "distance_km": 7.8,
+        "eta_minutes": 11.0,
+        "route": [
+          "M07",
+          "M13",
+          "M14",
+          "M15",
+          "M16",
+          "M17"
+        ]
+      },
+      {
+        "ambulance_id": "AMB-01",
+        "distance_km": 7.5,
+        "eta_minutes": 12.4,
+        "route": [
+          "M01",
+          "M02",
+          "M08",
+          "M09",
+          "M15",
+          "M16",
+          "M17"
+        ]
+      },
+      {
+        "ambulance_id": "AMB-03",
+        "distance_km": 11.1,
+        "eta_minutes": 13.6,
+        "route": [
+          "M31",
+          "M32",
+          "M26",
+          "M27",
+          "M21",
+          "M22",
+          "M16",
+          "M17"
+        ]
+      }
+    ],
+    "incident_id": 1,
+    "selected": {
+      "ambulance_id": "AMB-07",
+      "distance_km": 7.2,
+      "eta_minutes": 10.4,
+      "route": [
+        "M33",
+        "M27",
+        "M21",
+        "M22",
+        "M16",
+        "M17"
+      ]
+    }
+  },
+  "hospital_recommendation": {
+    "alternatives": [
+      {
+        "available_beds": 68,
+        "eta_minutes": 9.9,
+        "hospital_id": "H-05",
+        "location_id": "M26",
+        "name": "Metroville Medical Center 5",
+        "route": [
+          "M17",
+          "M16",
+          "M15",
+          "M21",
+          "M20",
+          "M26"
+        ]
+      },
+      {
+        "available_beds": 44,
+        "eta_minutes": 10.5,
+        "hospital_id": "H-01",
+        "location_id": "M02",
+        "name": "Metroville Medical Center 1",
+        "route": [
+          "M17",
+          "M11",
+          "M10",
+          "M04",
+          "M03",
+          "M02"
+        ]
+      }
+    ],
+    "incident_id": 1,
+    "recommendation": {
+      "available_beds": 56,
+      "eta_minutes": 6.7,
+      "hospital_id": "H-03",
+      "location_id": "M14",
+      "name": "Metroville Medical Center 3",
+      "route": [
+        "M17",
+        "M16",
+        "M15",
+        "M14"
+      ]
+    },
+    "rejected": [
+      {
+        "hospital_id": "H-02",
+        "reason": "missing trauma specialty"
+      },
+      {
+        "hospital_id": "H-04",
+        "reason": "missing trauma specialty"
+      },
+      {
+        "hospital_id": "H-06",
+        "reason": "missing trauma specialty"
+      }
+    ]
+  },
+  "evacuation": {
+    "total_demand": 550,
+    "maximum_flow": 480,
+    "unserved_demand": 70,
+    "augmenting_paths": [
+      {
+        "bottleneck": 165,
+        "path": [
+          "__EVAC_SOURCE__",
+          "M03",
+          "M04",
+          "__EVAC_SINK__"
+        ]
+      },
+      {
+        "bottleneck": 135,
+        "path": [
+          "__EVAC_SOURCE__",
+          "M03",
+          "M09",
+          "M10",
+          "__EVAC_SINK__"
+        ]
+      },
+      {
+        "bottleneck": 125,
+        "path": [
+          "__EVAC_SOURCE__",
+          "M17",
+          "M11",
+          "M10",
+          "__EVAC_SINK__"
+        ]
+      },
+      {
+        "bottleneck": 55,
+        "path": [
+          "__EVAC_SOURCE__",
+          "M17",
+          "M11",
+          "M05",
+          "M04",
+          "__EVAC_SINK__"
+        ]
+      }
+    ],
+    "min_cut": {
+      "edges": [
+        {
+          "capacity": 220,
+          "source": "M04",
+          "target": "__EVAC_SINK__"
+        },
+        {
+          "capacity": 260,
+          "source": "M10",
+          "target": "__EVAC_SINK__"
+        }
+      ],
+      "sink_side": [
+        "__EVAC_SINK__"
+      ],
+      "source_side": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "M07",
+        "M08",
+        "M09",
+        "M10",
+        "M11",
+        "M12",
+        "M13",
+        "M14",
+        "M15",
+        "M16",
+        "M17",
+        "M18",
+        "M19",
+        "M20",
+        "M21",
+        "M22",
+        "M23",
+        "M24",
+        "M25",
+        "M26",
+        "M27",
+        "M28",
+        "M29",
+        "M30",
+        "M31",
+        "M32",
+        "M33",
+        "M34",
+        "M35",
+        "M36",
+        "__EVAC_SOURCE__"
+      ]
+    },
+    "stats": {
+      "algorithm": "edmonds_karp",
+      "augmentations": 4,
+      "edge_checks": 396,
+      "execution_ms": 0.2412999965599738,
+      "iterations": 5
+    }
+  },
+  "connectivity": {
+    "visited_count": 36,
+    "unreachable": []
+  },
+  "mst": {
+    "edge_count": 35,
+    "component_count": 1,
+    "total_distance": 47.4
+  },
+  "visualization": {
+    "events": 71,
+    "first_events": [
+      {
+        "distance": 0.0,
+        "node": "M01",
+        "type": "node_visited"
+      },
+      {
+        "distance": 1.9000000000000001,
+        "from": "M01",
+        "node": "M02",
+        "type": "distance_updated"
+      },
+      {
+        "distance": 2.4,
+        "from": "M01",
+        "node": "M07",
+        "type": "distance_updated"
+      },
+      {
+        "distance": 1.9000000000000001,
+        "node": "M02",
+        "type": "node_visited"
+      }
+    ]
+  },
+  "workflow": {
+    "created_incident_id": 3,
+    "dispatch": {
+      "alternatives": [
+        {
+          "ambulance_id": "AMB-05",
+          "distance_km": 7.8,
+          "eta_minutes": 11.2,
+          "route": [
+            "M07",
+            "M01",
+            "M02",
+            "M03",
+            "M04",
+            "M05"
+          ]
+        },
+        {
+          "ambulance_id": "AMB-07",
+          "distance_km": 10.1,
+          "eta_minutes": 14.8,
+          "route": [
+            "M33",
+            "M27",
+            "M21",
+            "M22",
+            "M16",
+            "M17",
+            "M11",
+            "M05"
+          ]
+        },
+        {
+          "ambulance_id": "AMB-03",
+          "distance_km": 14.0,
+          "eta_minutes": 18.0,
+          "route": [
+            "M31",
+            "M32",
+            "M26",
+            "M27",
+            "M21",
+            "M22",
+            "M16",
+            "M17",
+            "M11",
+            "M05"
+          ]
+        }
+      ],
+      "incident_id": 3,
+      "selected": {
+        "ambulance_id": "AMB-01",
+        "distance_km": 6.6,
+        "eta_minutes": 9.2,
+        "route": [
+          "M01",
+          "M02",
+          "M03",
+          "M04",
+          "M05"
+        ]
+      }
+    },
+    "hospital_allocation": {
+      "allocation": {
+        "available_beds": 44,
+        "eta_minutes": 7.1,
+        "hospital_id": "H-01",
+        "location_id": "M02",
+        "name": "Metroville Medical Center 1",
+        "route": [
+          "M05",
+          "M04",
+          "M03",
+          "M02"
+        ]
+      }
+    },
+    "recommendations": {
+      "alternatives": [
+        {
+          "available_beds": 56,
+          "eta_minutes": 9.7,
+          "hospital_id": "H-03",
+          "location_id": "M14",
+          "name": "Metroville Medical Center 3",
+          "route": [
+            "M05",
+            "M11",
+            "M10",
+            "M16",
+            "M15",
+            "M14"
+          ]
+        },
+        {
+          "available_beds": 68,
+          "eta_minutes": 12.9,
+          "hospital_id": "H-05",
+          "location_id": "M26",
+          "name": "Metroville Medical Center 5",
+          "route": [
+            "M05",
+            "M11",
+            "M10",
+            "M16",
+            "M15",
+            "M21",
+            "M20",
+            "M26"
+          ]
+        }
+      ],
+      "incident_id": 3,
+      "recommendation": {
+        "available_beds": 44,
+        "eta_minutes": 7.1,
+        "hospital_id": "H-01",
+        "location_id": "M02",
+        "name": "Metroville Medical Center 1",
+        "route": [
+          "M05",
+          "M04",
+          "M03",
+          "M02"
+        ]
+      },
+      "rejected": [
+        {
+          "hospital_id": "H-02",
+          "reason": "missing trauma specialty"
+        },
+        {
+          "hospital_id": "H-04",
+          "reason": "missing trauma specialty"
+        },
+        {
+          "hospital_id": "H-06",
+          "reason": "missing trauma specialty"
+        }
+      ]
+    }
+  },
+  "benchmark_growth": {
+    "average_degree": 4,
+    "growth_results": [
+      {
+        "algorithms": {
+          "astar": {
+            "edge_checks": 78,
+            "heap_operations": 50,
+            "iterations": 20,
+            "median_ms": 0.15589999384246767,
+            "minimum_ms": 0.152900000102818,
+            "relaxations": 29,
+            "samples_ms": [
+              0.15589999384246767,
+              0.152900000102818,
+              0.16200000391108915
+            ],
+            "visited_nodes": 20
+          },
+          "bellman_ford": {
+            "edge_checks": 500,
+            "heap_operations": 0,
+            "iterations": 4,
+            "median_ms": 0.1480999999330379,
+            "minimum_ms": 0.14260000170907006,
+            "relaxations": 49,
+            "samples_ms": [
+              0.1480999999330379,
+              0.14899999951012433,
+              0.14260000170907006
+            ],
+            "visited_nodes": 0
+          },
+          "dijkstra_array": {
+            "edge_checks": 78,
+            "heap_operations": 0,
+            "iterations": 20,
+            "median_ms": 0.06269999721553177,
+            "minimum_ms": 0.061599996115546674,
+            "relaxations": 29,
+            "samples_ms": [
+              0.06500000017695129,
+              0.06269999721553177,
+              0.061599996115546674
+            ],
+            "visited_nodes": 20
+          },
+          "dijkstra_heap": {
+            "edge_checks": 78,
+            "heap_operations": 51,
+            "iterations": 20,
+            "median_ms": 0.0360000049113296,
+            "minimum_ms": 0.03420000575715676,
+            "relaxations": 29,
+            "samples_ms": [
+              0.03749999450519681,
+              0.0360000049113296,
+              0.03420000575715676
+            ],
+            "visited_nodes": 20
+          }
+        },
+        "average_degree": 4.0,
+        "edge_count": 100,
+        "metric": "time",
+        "note": "Measured in this Python runtime; timings vary by hardware and graph structure.",
+        "repetitions": 3,
+        "seed": 42,
+        "size": 25
+      },
+      {
+        "algorithms": {
+          "astar": {
+            "edge_checks": 193,
+            "heap_operations": 127,
+            "iterations": 48,
+            "median_ms": 0.32160000409930944,
+            "minimum_ms": 0.31680000392952934,
+            "relaxations": 73,
+            "samples_ms": [
+              0.32160000409930944,
+              0.32419999479316175,
+              0.31680000392952934
+            ],
+            "visited_nodes": 48
+          },
+          "bellman_ford": {
+            "edge_checks": 1400,
+            "heap_operations": 0,
+            "iterations": 6,
+            "median_ms": 0.3949999954784289,
+            "minimum_ms": 0.39480000123148784,
+            "relaxations": 134,
+            "samples_ms": [
+              0.3949999954784289,
+              0.39850000030128285,
+              0.39480000123148784
+            ],
+            "visited_nodes": 0
+          },
+          "dijkstra_array": {
+            "edge_checks": 193,
+            "heap_operations": 0,
+            "iterations": 48,
+            "median_ms": 0.17970000044442713,
+            "minimum_ms": 0.17859999934444204,
+            "relaxations": 72,
+            "samples_ms": [
+              0.18199999612988904,
+              0.17970000044442713,
+              0.17859999934444204
+            ],
+            "visited_nodes": 48
+          },
+          "dijkstra_heap": {
+            "edge_checks": 193,
+            "heap_operations": 126,
+            "iterations": 48,
+            "median_ms": 0.0748999955249019,
+            "minimum_ms": 0.07229999755509198,
+            "relaxations": 72,
+            "samples_ms": [
+              0.07610000466229394,
+              0.0748999955249019,
+              0.07229999755509198
+            ],
+            "visited_nodes": 48
+          }
+        },
+        "average_degree": 4.0,
+        "edge_count": 200,
+        "metric": "time",
+        "note": "Measured in this Python runtime; timings vary by hardware and graph structure.",
+        "repetitions": 3,
+        "seed": 42,
+        "size": 50
+      },
+      {
+        "algorithms": {
+          "astar": {
+            "edge_checks": 362,
+            "heap_operations": 241,
+            "iterations": 89,
+            "median_ms": 0.6143999999039806,
+            "minimum_ms": 0.6085999993956648,
+            "relaxations": 132,
+            "samples_ms": [
+              0.6143999999039806,
+              0.6085999993956648,
+              0.6281000023591332
+            ],
+            "visited_nodes": 89
+          },
+          "bellman_ford": {
+            "edge_checks": 2800,
+            "heap_operations": 0,
+            "iterations": 6,
+            "median_ms": 0.945699997828342,
+            "minimum_ms": 0.9168000033241697,
+            "relaxations": 353,
+            "samples_ms": [
+              0.9579999968991615,
+              0.945699997828342,
+              0.9168000033241697
+            ],
+            "visited_nodes": 0
+          },
+          "dijkstra_array": {
+            "edge_checks": 366,
+            "heap_operations": 0,
+            "iterations": 90,
+            "median_ms": 0.5466000002343208,
+            "minimum_ms": 0.5388999998103827,
+            "relaxations": 133,
+            "samples_ms": [
+              0.6223999953363091,
+              0.5466000002343208,
+              0.5388999998103827
+            ],
+            "visited_nodes": 90
+          },
+          "dijkstra_heap": {
+            "edge_checks": 366,
+            "heap_operations": 246,
+            "iterations": 90,
+            "median_ms": 0.3161000058753416,
+            "minimum_ms": 0.2758000046014786,
+            "relaxations": 133,
+            "samples_ms": [
+              0.4239000045345165,
+              0.2758000046014786,
+              0.3161000058753416
+            ],
+            "visited_nodes": 90
+          }
+        },
+        "average_degree": 4.0,
+        "edge_count": 400,
+        "metric": "time",
+        "note": "Measured in this Python runtime; timings vary by hardware and graph structure.",
+        "repetitions": 3,
+        "seed": 42,
+        "size": 100
+      },
+      {
+        "algorithms": {
+          "astar": {
+            "edge_checks": 605,
+            "heap_operations": 427,
+            "iterations": 135,
+            "median_ms": 1.528200002212543,
+            "minimum_ms": 1.3911999994888902,
+            "relaxations": 280,
+            "samples_ms": [
+              1.3911999994888902,
+              1.528200002212543,
+              2.172599997720681
+            ],
+            "visited_nodes": 135
+          },
+          "bellman_ford": {
+            "edge_checks": 8000,
+            "heap_operations": 0,
+            "iterations": 7,
+            "median_ms": 3.474199998890981,
+            "minimum_ms": 3.4080999976140447,
+            "relaxations": 967,
+            "samples_ms": [
+              3.4080999976140447,
+              3.4805000032065436,
+              3.474199998890981
+            ],
+            "visited_nodes": 0
+          },
+          "dijkstra_array": {
+            "edge_checks": 626,
+            "heap_operations": 0,
+            "iterations": 140,
+            "median_ms": 2.18019999738317,
+            "minimum_ms": 2.1132999972905964,
+            "relaxations": 284,
+            "samples_ms": [
+              2.2914000001037493,
+              2.18019999738317,
+              2.1132999972905964
+            ],
+            "visited_nodes": 140
+          },
+          "dijkstra_heap": {
+            "edge_checks": 626,
+            "heap_operations": 438,
+            "iterations": 140,
+            "median_ms": 0.28819999715778977,
+            "minimum_ms": 0.2880000029108487,
+            "relaxations": 284,
+            "samples_ms": [
+              0.28819999715778977,
+              0.3006999977515079,
+              0.2880000029108487
+            ],
+            "visited_nodes": 140
+          }
+        },
+        "average_degree": 4.0,
+        "edge_count": 1000,
+        "metric": "time",
+        "note": "Measured in this Python runtime; timings vary by hardware and graph structure.",
+        "repetitions": 3,
+        "seed": 42,
+        "size": 250
+      },
+      {
+        "algorithms": {
+          "astar": {
+            "edge_checks": 1806,
+            "heap_operations": 1141,
+            "iterations": 438,
+            "median_ms": 3.6003999994136393,
+            "minimum_ms": 3.3001999981934205,
+            "relaxations": 633,
+            "samples_ms": [
+              4.6457999997073784,
+              3.6003999994136393,
+              3.3001999981934205
+            ],
+            "visited_nodes": 438
+          },
+          "bellman_ford": {
+            "edge_checks": 20000,
+            "heap_operations": 0,
+            "iterations": 9,
+            "median_ms": 11.829499999294057,
+            "minimum_ms": 11.547899994184263,
+            "relaxations": 2082,
+            "samples_ms": [
+              15.359199998783879,
+              11.829499999294057,
+              11.547899994184263
+            ],
+            "visited_nodes": 0
+          },
+          "dijkstra_array": {
+            "edge_checks": 1819,
+            "heap_operations": 0,
+            "iterations": 442,
+            "median_ms": 13.802200002828613,
+            "minimum_ms": 10.42540000344161,
+            "relaxations": 637,
+            "samples_ms": [
+              10.42540000344161,
+              13.802200002828613,
+              15.926400003081653
+            ],
+            "visited_nodes": 442
+          },
+          "dijkstra_heap": {
+            "edge_checks": 1819,
+            "heap_operations": 1153,
+            "iterations": 442,
+            "median_ms": 0.7353000037255697,
+            "minimum_ms": 0.6897000057506375,
+            "relaxations": 637,
+            "samples_ms": [
+              0.7353000037255697,
+              0.7506000038119964,
+              0.6897000057506375
+            ],
+            "visited_nodes": 442
+          }
+        },
+        "average_degree": 4.0,
+        "edge_count": 2000,
+        "metric": "time",
+        "note": "Measured in this Python runtime; timings vary by hardware and graph structure.",
+        "repetitions": 3,
+        "seed": 42,
+        "size": 500
+      }
+    ],
+    "note": "Each size uses a seeded graph shared by the compared algorithms; results are measured, not theoretical.",
+    "repetitions": 3,
+    "seed": 42
+  },
+  "dashboard_summary": {
+    "active_incidents": 3,
+    "active_road_blockages": 0,
+    "available_ambulances": 7,
+    "available_beds": 353,
+    "dispatched_ambulances": 1,
+    "hospitals": 6,
+    "locations": 36,
+    "open_roads": 120,
+    "road_connections": 120,
+    "shelters": 6
+  }
+}
