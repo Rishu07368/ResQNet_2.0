@@ -102,7 +102,8 @@ function renderIncidents() {
   $("#incident-table").innerHTML = state.incidents.length ? `<table class="table"><thead><tr><th>ID / TYPE</th><th>LOCATION</th><th>SEVERITY</th><th>UNIT / HOSPITAL</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody>
     ${state.incidents.map((incident) => {
       let actionButtons = "";
-      if (incident.status === "Pending") actionButtons = `<button class="button primary small" data-action="preview-dispatch" data-id="${incident.id}">Find unit</button>`;
+      if (incident.status === "Pending" && incident.required_unit === "ambulance") actionButtons = `<button class="button primary small" data-action="preview-dispatch" data-id="${incident.id}">Find unit</button>`;
+      else if (incident.status === "Pending") actionButtons = `<span class="hint">No ${escapeHtml(incident.required_unit)} fleet configured</span>`;
       else if (incident.status === "Dispatched") actionButtons = `<button class="button secondary small" data-action="status" data-status="On Scene" data-id="${incident.id}">On Scene</button>`;
       else if (incident.status === "On Scene") actionButtons = `<button class="button secondary small" data-action="status" data-status="Transporting" data-id="${incident.id}">Transport</button><button class="button secondary small" data-action="status" data-status="Resolved" data-id="${incident.id}">Resolve</button>`;
       else if (incident.status === "Transporting") actionButtons = `<button class="button secondary small" data-action="status" data-status="Resolved" data-id="${incident.id}">Resolve</button>`;
