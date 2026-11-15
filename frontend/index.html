@@ -63,10 +63,10 @@
               <label>Incident location<select name="location_id" class="select location-options" required></select></label>
               <label>Incident type<input name="incident_type" required maxlength="80" placeholder="e.g. Traffic collision"></label>
               <label>Severity<select name="severity" class="select"><option>Critical</option><option>High</option><option selected>Medium</option><option>Low</option></select></label>
-              <label>Required response unit<select name="required_unit" class="select"><option value="ambulance">Ambulance</option><option value="fire">Fire unit</option><option value="police">Police unit</option></select></label>
+              <label>Required response unit<select name="required_unit" class="select" title="This training simulation currently supports ambulance dispatch only."><option value="ambulance">Ambulance</option></select></label>
               <label>Required specialty<select name="required_specialty" class="select"><option value="">General response</option><option value="trauma">Trauma</option><option value="cardiac">Cardiac</option></select></label>
               <label class="span-two">Description<textarea name="description" rows="2" placeholder="Simulation details"></textarea></label>
-              <div class="form-footer"><span class="hint">No real emergency services are contacted.</span><button class="button primary" type="submit">＋ Create incident</button></div>
+              <div class="form-footer"><span class="hint">This simulation supports ambulance dispatch only. No real emergency services are contacted.</span><button class="button primary" type="submit">＋ Create incident</button></div>
             </form>
           </article>
           <article class="card"><div class="card-heading"><div><h2>Response units</h2><p>Availability and current assignment status</p></div><span id="ambulance-count" class="count-pill">— units</span></div><div id="ambulance-list" class="unit-list"></div></article>
