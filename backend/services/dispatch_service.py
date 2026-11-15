@@ -40,7 +40,7 @@ def _candidate_ambulances(db: sqlite3.Connection, incident_id: int) -> list[dict
     if incident["status"] != "Pending":
         raise ValueError("Only pending incidents can be dispatched")
     if incident["required_unit"] != "ambulance":
-        raise ValueError(f"No dispatchable {incident['required_unit']} fleet is configured in this simulation")
+        raise ValueError("This simulation currently supports ambulance dispatch only; fire and police response units are not configured.")
     locations, _, graph = snapshot(db)
     ambulances = rows(db, "SELECT * FROM ambulances WHERE status='available' AND assigned_incident IS NULL ORDER BY id")
     candidates = []

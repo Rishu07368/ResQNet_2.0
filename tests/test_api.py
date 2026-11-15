@@ -177,6 +177,9 @@ def test_validation_and_demo_reset(client):
         "location_id": "M13", "incident_type": "Fire drill", "severity": "High", "required_unit": "fire",
     })
     assert fire.status_code == 201
-    assert client.post(f"/api/incidents/{fire.json['incident']['id']}/dispatch", json={}).json["code"] == "VALIDATION_ERROR"
+    dispatch_error = client.post(f"/api/incidents/{fire.json['incident']['id']}/dispatch", json={})
+    assert dispatch_error.status_code == 400
+    assert dispatch_error.json["code"] == "VALIDATION_ERROR"
+    assert "ambulance dispatch only" in dispatch_error.json["message"].lower()
     assert client.post("/api/demo/reset", json={}).status_code == 200
     assert client.get("/api/dashboard/summary").json["active_incidents"] == 2
